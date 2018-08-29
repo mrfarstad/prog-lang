@@ -47,7 +47,12 @@ data Status
 -- and returns a tuple of a Status (look above, describes the amount of subjects in the list)
 -- and the name
 amountOf :: String -> [a] -> (Status, String)
-amountOf = undefined
+amountOf input list = do
+  case length list of
+    0 -> (None, input)
+    1 -> (One, input)
+    2 -> (Two, input)
+    3 -> (Three, input)
 
 -- TASK 2
 -- Recursion
@@ -79,8 +84,15 @@ takeInt n li =
     else [li !! x | x <- [0 .. n - 1]]
 
 -- implement "fizzbuzz" as described in exercise 1
+foooo :: Int -> String
+foooo test
+  | test `mod` 15 == 0 = "FizzBuzz"
+  | test `mod` 3 == 0 = "Fizz"
+  | test `mod` 5 == 0 = "Buzz"
+  | otherwise = show test
+
 fizzbuzz :: [String]
-fizzbuzz = undefined
+fizzbuzz = [foooo x | x <- [1 .. 100]]
 
 printFizz :: IO ()
 printFizz = mapM_ putStrLn fizzbuzz
