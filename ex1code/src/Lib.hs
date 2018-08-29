@@ -47,6 +47,7 @@ data Status
 -- and the name
 amountOf :: String -> [a] -> (Status, String)
 amountOf = undefined
+
 -- TASK 2
 -- Recursion
 -- finish the function "fib" that calculates the
@@ -56,7 +57,7 @@ amountOf = undefined
 fib :: Int -> Int
 fib 0 = 0
 fib 1 = 1
-fib n = fib(n-1) + fib(n-2)
+fib n = fib (n - 1) + fib (n - 2)
 
 -- TASK 3
 -- Working with lists
@@ -71,7 +72,7 @@ ending li = [x ++ "ing" | x <- li, x /= ""]
 -- returns the first n elements of
 -- the list
 takeInt :: Int -> [Int] -> [Int]
-takeInt = undefined
+takeInt n li = [li !! x | x <- [0 .. n - 1]]
 
 -- implement "fizzbuzz" as described in exercise 1
 fizzbuzz :: [String]
