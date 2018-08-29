@@ -1,0 +1,13 @@
+• How do you plan your work?
+- We discuss briefly which working hours fit our schedule. Then we try to coordinate our schedule for the best team cooperation.
+
+• How do you distribute tasks?
+- We discuss within the group which part of the task each member will focus on. Then the tasks will be distributed thereafter.
+
+• How do you ensure that an effort is being made?
+- Make sure that every group member has done the tasks they are assigned. If they have not completed their tasks, ask what hinders them
+from completing them. Offer help and give motivation. Working in groups will ensure that the job gets done.
+
+• What do you do if your cooperation does not work?
+- Then we discuss better ways of communicating. We can also improve documentation of individual work which makes it easier for other
+group member to read the code.
