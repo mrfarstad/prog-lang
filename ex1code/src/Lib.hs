@@ -43,7 +43,6 @@ data Status = One | Two | Three | None deriving (Show, Eq)
 -- and the name
 amountOf :: String -> [a] -> (Status, String)
 amountOf = undefined
-
 -- TASK 2
 -- Recursion
 
@@ -52,7 +51,9 @@ amountOf = undefined
 -- assuming that 0th = 0 and 1st = 1
 -- do not optimize it
 fib :: Int -> Int
-fib = undefined
+fib 0 = 0
+fib 1 = 1
+fib n = fib(n-1) + fib(n-2)
 
 -- TASK 3
 -- Working with lists
