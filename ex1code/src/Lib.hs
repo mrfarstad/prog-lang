@@ -24,7 +24,7 @@ import Prelude hiding (take)
 -- finish the function "add" that takes two integers
 -- and returns the sum of them
 add :: Int -> Int -> Int
-add n m = undefined
+add n m = n + m
 
 -- complete the function "isVowel" which
 -- takes a character and returns True
@@ -32,7 +32,7 @@ add n m = undefined
 -- hint: a string is a list
 -- hint2: use `elem` from Prelude
 isVowel :: Char -> Bool
-isVowel chr = undefined
+isVowel chr = chr `elem` (['a'..'z'] ++ ['A'..'Z'])
 
 data Status = One | Two | Three | None deriving (Show, Eq)
 
