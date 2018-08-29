@@ -72,7 +72,10 @@ ending li = [x ++ "ing" | x <- li, x /= ""]
 -- returns the first n elements of
 -- the list
 takeInt :: Int -> [Int] -> [Int]
-takeInt n li = [li !! x | x <- [0 .. n - 1]]
+takeInt n li =
+  if n > length li
+    then li
+    else [li !! x | x <- [0 .. n - 1]]
 
 -- implement "fizzbuzz" as described in exercise 1
 fizzbuzz :: [String]
