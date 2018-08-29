@@ -31,7 +31,8 @@ add n m = n + m
 -- hint: a string is a list
 -- hint2: use `elem` from Prelude
 isVowel :: Char -> Bool
-isVowel chr = chr `elem` (['a' .. 'z'] ++ ['A' .. 'Z'])
+isVowel chr =
+  chr `elem` ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
 
 data Status
   = One
