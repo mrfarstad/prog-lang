@@ -64,7 +64,7 @@ fib n = fib(n-1) + fib(n-2)
 -- strings and returns them with the ending -ing
 -- if the string is empty, remove it from the list
 ending :: [String] -> [String]
-ending = undefined
+ending li = [x ++ "ing" | x <- li, x /= ""]
 
 -- complete the function "takeInt" that
 -- an integer n and a list of integers and
