@@ -40,10 +40,10 @@ f2 a b = b
 -- signature. (Hint: If you already wrote takeInt, you won't
 -- have to change much.)
 take :: Int -> [a] -> [a]
-take n li =
-  if n > length li
-    then li
-    else [li !! x | x <- [0 .. n - 1]]
+take n [] = []
+take n (x:xs)
+  | n > 0 = x : take (n - 1) xs
+  | otherwise = []
 
 -- The function head :: [a] -> a which returns the first
 -- element of a list, is /partial/, meaning it will crash for
@@ -113,11 +113,11 @@ approx x (a:aa) =
     else approx x aa
 
 isPerfSq :: Double -> Bool
-isPerfSq x = isInteger (approx 0.000000001 (genApp x))
+isPerfSq x = isInteger . approx 0.00000001 $ genApp x
 
 --uncomment when isPerfSqr is defined
 accuracy :: Int -> Bool
-accuracy x = take x generated == take x [x ^ 2 | x <- [1 ..]]
+accuracy x = take x generated == take x [num ^ 2 | num <- [1 ..]]
   where
     zpd = zip [1 ..] (map isPerfSq [1 ..])
     f (x, y) = y == True
