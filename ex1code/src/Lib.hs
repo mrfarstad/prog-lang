@@ -16,7 +16,7 @@ module Lib
   ) where
 
 import           Control.Monad (mapM_)
-import           Prelude       hiding (take)
+import           Prelude
 
 -- TASK 1
 -- Simple functions
@@ -31,8 +31,7 @@ add n m = n + m
 -- hint: a string is a list
 -- hint2: use `elem` from Prelude
 isVowel :: Char -> Bool
-isVowel chr =
-  chr `elem` ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+isVowel chr = chr `elem` ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
 
 data Status
   = One
