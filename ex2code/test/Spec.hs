@@ -84,4 +84,5 @@ main =
       it "werkz" $ do isPerfSq 100 `shouldBe` True
       it "werkz" $ do isPerfSq 10000 `shouldBe` True
       it "werkz" $ do isPerfSq 1000 `shouldBe` False
-      it "hasAccuracy" $ do accuracy 200 `shouldBe` True
+      it "hasAccuracy 200" $ do accuracy 200 `shouldBe` True
+      it "hasAccuracy 2000" $ do accuracy 2000 `shouldBe` True
