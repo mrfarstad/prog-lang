@@ -113,7 +113,7 @@ approx x (a:aa) =
     else approx x aa
 
 isPerfSq :: Double -> Bool
-isPerfSq x = isInteger . approx 0.00000001 $ genApp x
+isPerfSq x = isInteger (approx 0.00000001 $ genApp x)
 
 --uncomment when isPerfSqr is defined
 accuracy :: Int -> Bool

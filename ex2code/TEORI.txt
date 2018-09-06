@@ -1,0 +1,25 @@
+Theory
+
+- A pointer reference points to a memory location, and it can point to nothing (null/0), while Maybe encapsulates an optional value. The optional value can be empty, or contain a value of the given type.
+- ($) is a function that makes sure that everything on the right side is evaluated before anything else
+- The (.) function that takes a two functions and an generic input argument, piping the argument through the two functions.
+    - The dot is for composing functions, while ($) is for avoiding parentheses
+- It maps the list from 1 to infinity with the fib function (lazy), and then takes the first 50 elements.
+    - No, the elements are loaded lazy 
+    - The python value generates a complete list, before printing
+- Infinite lists are useful when creating generic utils
+- The (,) operator is a function (,) :: a -> b -> (a,b) that creates a tuple with the two input arguments
+- In python:
+
+def base(a):
+    def inline(b):
+        return a + 2*b
+    return inline
+
+base(2)(3)
+local = base(4)
+local(5)
+
+- Becuase haskell supports higher order functions
+
+
