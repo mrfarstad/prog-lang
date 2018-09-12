@@ -35,7 +35,6 @@ listProduct (x:xs) = x * listProduct xs
 
 listConcat :: [[a]] -> [a]
 listConcat []       = []
---listConcat ((x:xs):xxs) = x : listConcat (xs : xxs)
 listConcat (xs:xxs) = xs ++ listConcat (xxs)
 
 listMaximum :: (Ord a) => [a] -> Maybe a
@@ -60,19 +59,20 @@ class Foldable t where
   foldr :: (a -> b -> b) -> b -> t a -> b
 
 instance Foldable [] where
-  foldr = undefined
+  foldr op acc []     = acc
+  foldr op acc (x:xs) = op x $ foldr op acc xs
 
 --
 -- USE FOLDR TO DEFINE THESE FUNCTIONS
 --
 sum :: (Num a, Foldable t) => t a -> a
-sum = undefined
+sum xs = foldr (+) 0 xs
 
 concat :: Foldable t => t [a] -> [a]
-concat = undefined
+concat xxs = foldr (++) [] xxs
 
 length :: Foldable t => t a -> Int
-length = undefined
+length xs = undefined
 
 elem :: (Eq a, Foldable t) => a -> t a -> Bool
 elem = undefined
