@@ -1,50 +1,57 @@
 module Lib
-    ( listSum
-    , listProduct
-    , listConcat
-    , listMaximum
-    , listMinimum
-    , sum
-    , concat
-    , length
-    , elem
-    , safeMaximum
-    , safeMinimum
-    , any
-    , all
-    , foldr
-    , Complex(..)
-    ) where
+  ( listSum
+  , listProduct
+  , listConcat
+  , listMaximum
+  , listMinimum
+  , sum
+  , concat
+  , length
+  , elem
+  , safeMaximum
+  , safeMinimum
+  , any
+  , all
+  , foldr
+  , Complex(..)
+  ) where
 
-import Prelude hiding (foldr, maximum, minimum, any, all, length
-                      , concat, sum, product, elem, Foldable(..))
+import           Prelude hiding (Foldable (..), all, any, concat, elem, foldr,
+                          length, maximum, minimum, product, sum)
 
 -- TASK 2
 -- Bounded parametric polymorphism
-
 -- Implement the following functions that reduce a list to a single
 -- value (or Maybe a single value).
-
 -- Maybe is imported from Prelude and is defined like this:
 -- data Maybe a = Just a | Nothing
-
 listSum :: (Num a) => [a] -> a
-listSum = undefined
+listSum []     = 0
+listSum (x:xs) = x + listSum xs
 
 listProduct :: (Num a) => [a] -> a
-listProduct = undefined
+listProduct []     = 1
+listProduct (x:xs) = x * listProduct xs
 
 listConcat :: [[a]] -> [a]
-listConcat = undefined
+listConcat []       = []
+--listConcat ((x:xs):xxs) = x : listConcat (xs : xxs)
+listConcat (xs:xxs) = xs ++ listConcat (xxs)
 
 listMaximum :: (Ord a) => [a] -> Maybe a
-listMaximum = undefined
+listMaximum [] = Nothing
+listMaximum (x:xs)
+  | Just x > listMaximum xs = Just x
+  | otherwise = listMaximum xs
 
 listMinimum :: (Ord a) => [a] -> Maybe a
-listMinimum = undefined
+listMinimum [] = Nothing
+listMinimum [y] = Just y
+listMinimum (x:xs)
+  | Just x < listMinimum xs = Just x
+  | otherwise = listMinimum xs
 
 -- TASK 3 Folds
-
 -- TASK 3.1
 -- Below our Foldable class is defined. Now define a list instance of
 -- Foldable, and then define the Foldable versions of the functions
@@ -89,42 +96,43 @@ all p = undefined
 
 -- TASK 4
 -- Num Complex
- 
-data Complex = Complex Double Double deriving (Eq) 
- 
-instance Show Complex where 
-    show (Complex r i) 
-        | i >= 0 = show r ++ "+" ++ show i ++ "i" 
-        | otherwise = show r ++ "-" ++ show (abs i) ++ "i" 
+data Complex =
+  Complex Double
+          Double
+  deriving (Eq)
 
-instance Num Complex where 
-    (+) = undefined
-    (*) = undefined
-    abs = undefined 
-    signum = undefined
-    fromInteger = undefined 
-    negate = undefined 
+instance Show Complex where
+  show (Complex r i)
+    | i >= 0 = show r ++ "+" ++ show i ++ "i"
+    | otherwise = show r ++ "-" ++ show (abs i) ++ "i"
+
+instance Num Complex where
+  (+) = undefined
+  (*) = undefined
+  abs = undefined
+  signum = undefined
+  fromInteger = undefined
+  negate = undefined
 
 -- TASK 5
 -- Making your own type classes
-
 type Position = (Double, Double)
 
 class Pos a where
-    pos :: a -> Position
+  pos :: a -> Position
 
-data Campus = Kalvskinnet
-            | Gløshaugen
-            | Tyholt
-            | Moholt
-            | Dragvoll
-            deriving (Show, Eq)
+data Campus
+  = Kalvskinnet
+  | Gløshaugen
+  | Tyholt
+  | Moholt
+  | Dragvoll
+  deriving (Show, Eq)
 
 instance Pos Campus where
-    pos Kalvskinnet = (63.429, 10.388)
-    pos Gløshaugen  = (63.416, 10.403)
-    pos Tyholt      = (63.423, 10.435)
-    pos Moholt      = (63.413, 10.434)
-    pos Dragvoll    = (63.409, 10.471)
-
+  pos Kalvskinnet = (63.429, 10.388)
+  pos Gløshaugen  = (63.416, 10.403)
+  pos Tyholt      = (63.423, 10.435)
+  pos Moholt      = (63.413, 10.434)
+  pos Dragvoll    = (63.409, 10.471)
 --class (Pos a) => Move a where
