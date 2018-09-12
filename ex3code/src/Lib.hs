@@ -75,34 +75,31 @@ length :: Foldable t => t a -> Int
 length xs = foldr (\curr acc -> acc + 1) 0 xs
 
 elem :: (Eq a, Foldable t) => a -> t a -> Bool
-elem x xs =
+elem x =
   foldr
     (\curr acc ->
        if acc == False
          then curr == x
          else True)
     False
-    xs
 
 safeMaximum :: (Foldable t, Ord a) => t a -> Maybe a
-safeMaximum xs =
+safeMaximum =
   foldr
     (\curr acc ->
        if Just curr > acc
          then Just curr
          else acc)
     Nothing
-    xs
 
 safeMinimum :: (Foldable t, Ord a) => t a -> Maybe a
-safeMinimum xs =
+safeMinimum =
   foldr
     (\curr acc ->
        if Just curr < acc || acc == Nothing
          then Just curr
          else acc)
     Nothing
-    xs
 
 -- The functions "any" and "all" check if any or all elements of a
 -- Foldable satisfy the given predicate.
@@ -113,7 +110,13 @@ any :: Foldable t => (a -> Bool) -> t a -> Bool
 any p = undefined
 
 all :: Foldable t => (a -> Bool) -> t a -> Bool
-all p = undefined
+all foo =
+  foldr
+    (\curr acc ->
+       if acc
+         then foo curr
+         else False)
+    True
 
 -- TASK 4
 -- Num Complex
