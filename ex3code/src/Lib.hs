@@ -138,12 +138,16 @@ instance Show Complex where
     | otherwise = show r ++ "-" ++ show (abs i) ++ "i"
 
 instance Num Complex where
-  (+) = undefined
-  (*) = undefined
-  abs = undefined
-  signum = undefined
-  fromInteger = undefined
-  negate = undefined
+  (+) (Complex r i) (Complex r1 i1) = Complex (r + r1) (i + i1)
+  (*) (Complex a b) (Complex c d) = Complex (a * c - b * d) (a * d + b * c)
+  abs (Complex a b) = Complex (sqrt (a * a + b * b)) 0
+  signum (Complex a b) = foo
+    where
+      c = sqrt (a * a + b * b)
+      foo = Complex (a / c) (b / c)
+  fromInteger a = Complex (fromInteger a) 0
+  (-) (Complex a b) (Complex c d) = Complex (a - c) (b - d)
+  negate (Complex a b) = Complex (-a) (-b)
 
 -- TASK 5
 -- Making your own type classes
