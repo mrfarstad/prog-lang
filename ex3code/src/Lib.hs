@@ -72,16 +72,37 @@ concat :: Foldable t => t [a] -> [a]
 concat xxs = foldr (++) [] xxs
 
 length :: Foldable t => t a -> Int
-length xs = undefined
+length xs = foldr (\curr acc -> acc + 1) 0 xs
 
 elem :: (Eq a, Foldable t) => a -> t a -> Bool
-elem = undefined
+elem x xs =
+  foldr
+    (\curr acc ->
+       if acc == False
+         then curr == x
+         else True)
+    False
+    xs
 
 safeMaximum :: (Foldable t, Ord a) => t a -> Maybe a
-safeMaximum = undefined
+safeMaximum xs =
+  foldr
+    (\curr acc ->
+       if Just curr > acc
+         then Just curr
+         else acc)
+    Nothing
+    xs
 
 safeMinimum :: (Foldable t, Ord a) => t a -> Maybe a
-safeMinimum = undefined
+safeMinimum xs =
+  foldr
+    (\curr acc ->
+       if Just curr < acc || acc == Nothing
+         then Just curr
+         else acc)
+    Nothing
+    xs
 
 -- The functions "any" and "all" check if any or all elements of a
 -- Foldable satisfy the given predicate.
