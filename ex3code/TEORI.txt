@@ -1,0 +1,17 @@
+1. Yes, you have to return a Maybe. This is because the list might not have a maximum. This happens if the list is empty.
+
+2. You get these functions "for free", because we implement the way "Tree" is being reduced down to a single value after making it Foldable.
+This reduction is applied the same way for all the operators you pass into foldr. 
+
+3. You can make Complex and instance of Ord if you define what defines one complex number for being greater than another.
+In maths however, this is not defined. Therefore, I would not recommend implementing this unless you have a specific reason for doing so.
+
+4. This happens because (-) is just the infix version of negate.
+
+5. ex3code/src/Lib.hs|174 col 10 error| • Illegal instance declaration for ‘Pos Position’ (All instance types must be of the form (T t1 ... tn) where T is not a synonym. Use TypeSynonymInstances if you want to disable this.) • In the instance declaration for ‘Pos Position’ |174 | instance Pos Position where |          ^^^^^^^^^^^^
+I think it is posible to achieve this by following the instructions of using TypeSynonymInstances.
+
+6. ex3code/src/Lib.hs|195 col 5 error| Multiple declarations of ‘pos’ Declared at: Lib.hs:189:5 Lib.hs:195:5 |195 |   { pos  :: Position |     ^^^
+e 
+
+You get an exception complaining about multiple declarations of the variable.
