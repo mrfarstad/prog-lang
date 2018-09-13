@@ -170,4 +170,28 @@ instance Pos Campus where
   pos Tyholt      = (63.423, 10.435)
   pos Moholt      = (63.413, 10.434)
   pos Dragvoll    = (63.409, 10.471)
---class (Pos a) => Move a where
+
+class (Pos a) =>
+      Move a
+  where
+  move :: a -> Position -> a
+
+--  move Car (pos_x, pos_y) (move_x, move_y) =
+--    Car (pos_x + move_x, pos_y + move_y)
+--  move Key (pos_x, pos_y) (move_x, move_y) =
+--    Key (pos_x + move_x, pos_y + move_y)
+--  home :: a -> Position
+--  home a = Gløshaugen
+--
+--free :: Move a => a -> Bool
+--free = undefined
+data Car = Car
+  { carPos  :: Position
+  , carHome :: Position
+  } deriving (Eq, Show)
+
+--
+data Key = Key
+  { keyPos  :: Position
+  , keyHome :: Position
+  } deriving (Eq, Show)
