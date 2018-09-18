@@ -171,27 +171,36 @@ instance Pos Campus where
   pos Moholt      = (63.413, 10.434)
   pos Dragvoll    = (63.409, 10.471)
 
-class (Pos a) =>
-      Move a
-  where
-  move :: a -> Position -> a
-
---  move Car (pos_x, pos_y) (move_x, move_y) =
---    Car (pos_x + move_x, pos_y + move_y)
---  move Key (pos_x, pos_y) (move_x, move_y) =
---    Key (pos_x + move_x, pos_y + move_y)
---  home :: a -> Position
---  home a = Gløshaugen
---
---free :: Move a => a -> Bool
---free = undefined
 data Car = Car
   { carPos  :: Position
   , carHome :: Position
   } deriving (Eq, Show)
 
---
 data Key = Key
   { keyPos  :: Position
   , keyHome :: Position
   } deriving (Eq, Show)
+
+instance Pos Car where
+  pos (Car carPos carHome) = carPos
+
+instance Pos Key where
+  pos (Key keyPos keyHome) = keyPos
+
+class (Pos a) =>
+      Move a
+  where
+  move :: a -> Position -> a
+  home :: a -> Position
+
+instance Move Car where
+  move (Car (x0, y0) home) (x, y) = Car (x0 + x, y0 + y) home
+  home (Car _ home) = home
+
+instance Move Key where
+  move (Key (x0, y0) home) (x, y) = Key (x0 + x, y0 + y) home
+  home (Key _ home) = home
+--free :: Move a => a -> Bool
+--free (move home) = undefined
+--free (Key (x,y) (x0,y0)) = undefined
+--free _ = undefined
