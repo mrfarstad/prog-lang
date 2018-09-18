@@ -26,8 +26,7 @@ dropWhile p (x:xs)
   | otherwise = x : dropWhile p xs
 
 break :: (a -> Bool) -> [a] -> ([a], [a])
---break p xs = foldl (\(left, right) curr -> if ) ([], []) xs
-break _ [] = ([], [])
+break p = span (not . p)
 
 --break p (x:xs) =
 --  | p x = ([], xs)
