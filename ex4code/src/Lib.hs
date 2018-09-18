@@ -1,41 +1,53 @@
 module Lib
-    ( Token(..)
-    , Op(..)
-    , takeWhile
-    , dropWhile
-    , break
-    , splitOn
-    , lex
-    , tokenize
-    , interpret
-    , shunt
-    ) where
+  ( Token(..)
+  , Op(..)
+  , takeWhile
+  , dropWhile
+  , break
+  , splitOn
+  , lex
+  , tokenize
+  , interpret
+  , shunt
+  ) where
 
-import Prelude hiding (lex, dropWhile, takeWhile, break)
-import Data.Char (isDigit)
+import           Data.Char (isDigit)
+import           Prelude   hiding (break, dropWhile, lex, takeWhile)
 
 takeWhile, dropWhile :: (a -> Bool) -> [a] -> [a]
+takeWhile _ [] = []
+takeWhile p (x:xs)
+  | p x = x : takeWhile p xs
+  | otherwise = []
 
-takeWhile = undefined
-
-dropWhile = undefined
+dropWhile _ [] = []
+dropWhile p (x:xs)
+  | p x = dropWhile p xs
+  | otherwise = x : dropWhile p xs
 
 break :: (a -> Bool) -> [a] -> ([a], [a])
-break = undefined
+--break p xs = foldl (\(left, right) curr -> if ) ([], []) xs
+break _ [] = ([], [])
 
+--break p (x:xs) =
+--  | p x = ([], xs)
+--  | otherwise = (
+--break p xs = foldl (\acc curr -> if p curr then else) ([],[]) xs
 splitOn :: Eq a => a -> [a] -> [[a]]
 splitOn = undefined
 
-data Token = TokOp Op
-           | TokInt Int
-           | TokErr
-           deriving (Eq, Show)
+data Token
+  = TokOp Op
+  | TokInt Int
+  | TokErr
+  deriving (Eq, Show)
 
-data Op = Plus
-        | Minus
-        | Div
-        | Mult
-        deriving (Show, Eq)
+data Op
+  = Plus
+  | Minus
+  | Div
+  | Mult
+  deriving (Show, Eq)
 
 lex :: String -> [String]
 lex = undefined
