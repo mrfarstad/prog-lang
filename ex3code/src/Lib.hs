@@ -174,6 +174,7 @@ instance Pos Campus where
 data Car = Car
   { carPos  :: Position
   , carHome :: Position
+  , key     :: Key
   } deriving (Eq, Show)
 
 data Key = Key
@@ -182,10 +183,10 @@ data Key = Key
   } deriving (Eq, Show)
 
 instance Pos Car where
-  pos (Car carPos carHome) = carPos
+  pos (Car carPos _ _) = carPos
 
 instance Pos Key where
-  pos (Key keyPos keyHome) = keyPos
+  pos (Key keyPos _) = keyPos
 
 class (Pos a) =>
       Move a
@@ -194,13 +195,25 @@ class (Pos a) =>
   home :: a -> Position
 
 instance Move Car where
-  move (Car (x0, y0) home) (x, y) = Car (x0 + x, y0 + y) home
-  home (Car _ home) = home
+  move (Car (x0, y0) home key) (x, y) = Car (x0 + x, y0 + y) home key
+  home (Car _ home _) = home
 
 instance Move Key where
   move (Key (x0, y0) home) (x, y) = Key (x0 + x, y0 + y) home
   home (Key _ home) = home
---free :: Move a => a -> Bool
+
+free :: Move a => a -> Bool
+free a = pos a == home a
+
+carAvailible :: Car -> Bool
+carAvailible (Car pos home key) = free (Car pos home key) && free key
+
+distanceBetween :: Pos a => a -> a -> Int
+distanceBetween a b = result
+  where
+    (x, y) = pos a
+    (x1, y1) = pos b
+    result = round (sqrt ((x - x1) ^ 2 + (y - y1) ^ 2))
 --free (move home) = undefined
 --free (Key (x,y) (x0,y0)) = undefined
 --free _ = undefined
