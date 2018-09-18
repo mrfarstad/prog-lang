@@ -18,7 +18,7 @@ takeWhile, dropWhile :: (a -> Bool) -> [a] -> [a]
 takeWhile _ [] = []
 takeWhile p (x:xs)
   | p x = x : takeWhile p xs
-  | otherwise = []
+  | otherwise = takeWhile p xs
 
 dropWhile _ [] = []
 dropWhile p (x:xs)
