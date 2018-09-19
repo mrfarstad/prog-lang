@@ -49,6 +49,8 @@ data Op
   | Minus
   | Div
   | Mult
+  | Dup
+  | AddInv
   deriving (Show, Eq)
 
 lex :: String -> [String]
@@ -67,6 +69,8 @@ makeToken str
   | str == "-" = TokOp Minus
   | str == "*" = TokOp Mult
   | str == "/" = TokOp Div
+  | str == "#" = TokOp Dup
+  | str == "--" = TokOp AddInv
   | isAllDigits str = TokInt (read str :: Int)
   | otherwise = TokErr
   where
@@ -83,6 +87,8 @@ interpret = foldl foldingFunction []
     foldingFunction (TokInt x:TokInt y:ys) (TokOp Mult) = (TokInt $ x * y) : ys
     foldingFunction (TokInt x:TokInt y:ys) (TokOp Div) =
       (TokInt $ y `div` x) : ys
+    foldingFunction lst@(x:xs) (TokOp Dup) = x : lst
+    foldingFunction (TokInt x:xs) (TokOp AddInv) = TokInt (-x) : xs
     foldingFunction xs (TokInt int) = TokInt int : xs
     foldingFunction xs (TokErr) = [TokErr]
 
