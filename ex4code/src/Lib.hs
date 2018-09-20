@@ -47,11 +47,11 @@ data Token
 data Op
   = Plus
   | Minus
-  | Div
-  | Mult
   | Dup
   | AddInv
-  deriving (Show, Eq)
+  | Div
+  | Mult
+  deriving (Show, Eq, Ord)
 
 lex :: String -> [String]
 lex = splitOn ' '
@@ -93,10 +93,15 @@ interpret = foldl foldingFunction []
     foldingFunction xs (TokErr) = [TokErr]
 
 opLeq :: Token -> Token -> Bool
-opLeq = undefined
+opLeq (TokOp o1) (TokOp o2) = o1 > o2
 
 shunt :: [Token] -> [Token]
-shunt = undefined
+shunt ts = shuntInternal ts [] []
 
 shuntInternal :: [Token] -> [Token] -> [Token] -> [Token]
-shuntInternal = undefined
+-- is = input stack tail, os = output stack tail, ops = operation stack tail
+shuntInternal [] os ops = reverse os
+shuntInternal (TokInt i:is) os ops = shuntInternal is (TokInt i : os) ops
+shuntInternal (i:is) os operators@(op:ops)
+  | opLeq op i = shuntInternal is (op : os) (i : ops)
+  | otherwise = shuntInternal is (i : os) operators

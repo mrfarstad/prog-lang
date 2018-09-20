@@ -1,8 +1,8 @@
 module Main where
 
-import Lib
-import Control.Monad
-import System.Environment
+import           Control.Monad
+import           Lib
+import           System.Environment
 
 parseInfix :: String -> [Token]
 parseInfix = interpret . shunt . tokenize . Lib.lex
