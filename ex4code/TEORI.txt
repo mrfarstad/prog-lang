@@ -1,0 +1,20 @@
+1.
+<D> = <int> { <int> }
+<O> = - | + | * | /
+<E> = <D> <O> <D>
+
+2.
+<expression> ::= <integer> | <expression> <operator> <expression
+<operator> ::= - | + | * | /
+
+Presedence levels:
+/ and * : 2
+- and + : 1
+
+Left associativty, thefore not ambigious
+
+3. Context-sensitive and context-free grammars are ways of describing how expressive languages are. A context-free grammar is a grammar where the expansion of nonterminals (e.g. <digit>), is always the same, no matter where it is used. For a context-sensitive grammar this does not hold, and this is usually the case for practical programming languages. A usual restriction is often that you have to declare a variable before it can be used.
+
+Context-sensitive grammars are defined in two parts: a context-free grammar supplemented with a set of restrictions imposed by the language.
+
+4. a), c), d), f) and e) are legal string in the given language.
