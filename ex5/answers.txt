@@ -1,0 +1,92 @@
+Task 1:
+
+a) Valid: <S> -> <B> -> a<B>bb -> aεbb -> abb
+b) Valid: <S> -> <A> -> a<A>b -> aa<C>bb -> aac<C>cbb -> aacεcbb -> aaccbb
+c!!!) Invalid: <S> -/> <C>
+d) Valid: <S> -> <B> -> a<B>bb -> aa<B>bbbb -> aaεbbbb -> aabbbb
+
+Task 2:
+
+c) Unrestricted. This is because <Z> -> ε and <Y> -> ε. Grammars containing the empty token can only be unrestricted.
+
+Task 3:
+
+e) An interpreter traverses the syntax tree and generates low-level instructions for a real machine or an abstract machine.
+
+Task 4:
+
+c) A parser reads a sequence of tokens and outputs an abstract syntax tree.
+
+Task 5:
+
+b) 2 parse trees.
+
+                        <expression>
+                      /       |       \
+            <expression  <operator> <expression>
+            /    |    \      "*"         |
+          /      |      \            <integer>
+        /        |        \
+<expression> <operator> <expression>
+      |         "+"         |
+  <integer>              <integer>
+
+
+                        <expression>
+                      /       |       \
+            <expression  <operator> <expression>
+                  |         "+"     /    |    \
+               <integer>          /      |      \
+                                /        |        \
+                        <expression> <operator> <expression>
+                              |         "*"         |
+                          <integer>              <integer>
+
+
+Task 6:
+d) A namespace is an environment or abstract container that holds the set of bindings
+available at a given point in a program.
+
+Task 7:
+
+b) A scope is the section of code where a binding is reachable.
+
+Task 8:
+
+a) The identifier a, which is bound to 5, has a global scope. The variabel is overwritten in the function func.
+
+Task 9:
+
+The equal names are being saved as different variables, as we can see by the different variables in the desugared function.
+
+Task 10:
+
+b) Partial function. Undefined is the same as throwing an error with the message "undefined" and therefore throwing an error will be the same as undefined. Because the function will give error for some valid input, then it is a partial function.
+
+Task 11:
+
+b) Partial function. Gives error for n < 0.
+
+Task 12:
+
+a) Total function. This function is a total function, because for every input, the function will give a valid output, which in this cause is an error.
+
+Task 13:
+
+a) Total function. This function is a total function, because for every given n, the function will give a valid output, which will in all cases be an Integer.
+
+Task 14:
+a) and c).
+It contains a partial function and is therefore not a total function.
+An error is the same as undefined, and therfore it is a partial function.
+
+Task 15:
+
+Positive property: Ensures that we only get correct input into our function. This makes the function a total function.
+
+Negative property: It introduces a lot of overhead. The code introduces new types which often have to be looked up and the code length will become longer. This will make it less readable.
+
+Task 16:
+
+--- TODO ---
+
