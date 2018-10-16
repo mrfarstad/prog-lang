@@ -8,9 +8,12 @@ class Account(val bank: Bank, initialBalance: Double) {
     val uid = bank.generateAccountId
 
     def withdraw(amount: Double): Unit = balance.synchronized {
+        if (amount < 0) throw new IllegalAmountException("Negative withdrawal amounts is not allowed")
+        else if (amount > this.balance.amount) throw new NoSufficientFundsException("Insufficient funds")
         this.balance.amount -= amount
     }
     def deposit(amount: Double): Unit = balance.synchronized {
+        if (amount < 0) throw new IllegalAmountException("Negative deposit amounts is not allowed")
         this.balance.amount += amount
     }
     def getBalanceAmount: Double = balance.synchronized {
