@@ -19,7 +19,7 @@ class Bank(val allowedAttempts: Integer = 3) {
     private val processedTransactions: TransactionQueue = new TransactionQueue()
     private val executorContext = ExecutionContext.global
 
-    def addTransactionToQueue(from: Account, to: Account, amount: Double): Unit = this.synchronized {
+    def addTransactionToQueue(from: Account, to: Account, amount: Double): Unit = {
       transactionsQueue push new Transaction(
         transactionsQueue, processedTransactions, from, to, amount, allowedAttempts)
       processTransactions
@@ -33,13 +33,15 @@ class Bank(val allowedAttempts: Integer = 3) {
         freshUid
     }
 
-    private def processTransactions: Unit = this.synchronized {
+    private def processTransactions: Unit = {
       var attempt = 1
       val t = transactionsQueue.pop
       do {
         executorContext.execute(t)
+        Thread.sleep(10)
         attempt += 1
       } while (attempt < allowedAttempts && t.status != TransactionStatus.SUCCESS)
+      println(attempt, t.status)
       processedTransactions.push(t)
     }
 
@@ -47,7 +49,7 @@ class Bank(val allowedAttempts: Integer = 3) {
         new Account(this, initialBalance)
     }
 
-    def getProcessedTransactionsAsList: List[Transaction] = processedTransactions.synchronized {
+    def getProcessedTransactionsAsList: List[Transaction] = {
         processedTransactions.iterator.toList
     }
 

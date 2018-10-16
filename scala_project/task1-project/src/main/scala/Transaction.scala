@@ -46,12 +46,28 @@ class Transaction(val transactionsQueue: TransactionQueue,
   override def run: Unit = {
 
       def doTransaction() = {
+        var preFromAmount = 0.0
+        var postFromAmount = 0.0
+        var preToAmount = 0.0
+        var postToAmount = 0.0
         try {
+          preFromAmount = from.balance.amount
           from withdraw amount
+          postFromAmount = from.balance.amount
+          preToAmount = to.balance.amount
           to deposit amount
+          postToAmount = from.balance.amount
           this.status = TransactionStatus.SUCCESS
         } catch {
-          case e: Exception => this.status = TransactionStatus.FAILED
+          case e: Exception => {
+            if (postFromAmount < preFromAmount) {
+              from.balance.amount = preFromAmount
+            }
+            if (preToAmount > postToAmount) {
+              to.balance.amount = postFromAmount
+            }
+            this.status = TransactionStatus.FAILED
+          }
         }
       }
 
