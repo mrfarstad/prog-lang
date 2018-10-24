@@ -29,7 +29,7 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
 
     def allTransactionsCompleted: Boolean = {
         // Should return whether all Transaction-objects in transactions are completed
-        !getTransactions.exists(t => t.status != TransactionStatus.SUCCESS)
+        !getTransactions.exists(t => t.status == TransactionStatus.PENDING)
     }
 
     def withdraw(amount: Double): Unit = balance.synchronized {
@@ -90,7 +90,7 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
       }
 		}
 
-		case BalanceRequest => ??? // Should return current balance
+		case BalanceRequest => sender ! balance.amount // Should return current balance
 
 		case t: Transaction => {
 			// Handle incoming transaction

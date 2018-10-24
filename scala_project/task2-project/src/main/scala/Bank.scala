@@ -51,7 +51,7 @@ class Bank(val bankId: String) extends Actor {
           BankManager.findAccount(bankId, t.toAccountNumber) ! t
         }
 
-        case msg => ???
+        case msg => println(msg)
     }
 
     def processTransaction(t: Transaction): Unit = {
