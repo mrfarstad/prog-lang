@@ -13,22 +13,13 @@ case class IdentifyActor()
 
 class Bank(val bankId: String) extends Actor {
 
-    private val actorSystem = ActorSystem("Bank")
     val accountCounter = new AtomicInteger(1000)
 
     def createAccount(initialBalance: Double): ActorRef = {
         // Should create a new Account Actor and return its actor reference.
         // Accounts should be assigned with unique ids (increment with 1).
         accountCounter.getAndIncrement()
-        actorSystem.actorOf(
-            Props(
-                classOf[Account],
-                accountCounter toString,
-                bankId,
-                initialBalance
-            ),
-         s"account$bankId$accountCounter"
-        )
+        BankManager.createAccount(accountCounter toString, bankId, initialBalance)
     }
 
     def findAccount(accountId: String): Option[ActorRef] = {
@@ -57,7 +48,7 @@ class Bank(val bankId: String) extends Actor {
 
         case t: TransactionRequestReceipt => {
           // Forward receipt
-          BankManager.findAccount(bankId, t.toAccountNumber)
+          BankManager.findAccount(bankId, t.toAccountNumber) ! t
         }
 
         case msg => ???
@@ -77,15 +68,11 @@ class Bank(val bankId: String) extends Actor {
                 val otherBank: ActorRef = findOtherBank(toBankId).orNull
                 if (otherBank != null) {
                     otherBank ! t
-                } else {
-                    t.status = TransactionStatus.FAILED
                 }
             } else {
                 val account: ActorRef = findAccount(toAccountId).orNull
                 if (account != null) {
                     account ! t
-                } else {
-                    t.status = TransactionStatus.FAILED
                 }
             }
         }

@@ -12,7 +12,6 @@ case class BalanceRequest()
 
 class Account(val accountId: String, val bankId: String, val initialBalance: Double = 0) extends Actor {
 
-//    private val actorSystem = ActorSystem("Account")
     private var transactions = HashMap[String, Transaction]()
 
     class Balance(var amount: Double) {}
@@ -30,9 +29,7 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
 
     def allTransactionsCompleted: Boolean = {
         // Should return whether all Transaction-objects in transactions are completed
-        val res = !getTransactions.exists(t => t.status != TransactionStatus.SUCCESS)
-        println(res)
-        res
+        !getTransactions.exists(t => t.status != TransactionStatus.SUCCESS)
     }
 
     def withdraw(amount: Double): Unit = balance.synchronized {
@@ -42,7 +39,7 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
     }
 
     def deposit(amount: Double): Unit = balance.synchronized {
-        if (amount > 0) throw new IllegalAmountException("Negative deposit amounts is not allowed")
+        if (amount < 0) throw new IllegalAmountException("Negative deposit amounts is not allowed")
         balance.amount += amount
     }
 
