@@ -12,7 +12,7 @@ case class BalanceRequest()
 
 class Account(val accountId: String, val bankId: String, val initialBalance: Double = 0) extends Actor {
 
-    private val actorSystem = ActorSystem("Account")
+//    private val actorSystem = ActorSystem("Account")
     private var transactions = HashMap[String, Transaction]()
 
     class Balance(var amount: Double) {}
@@ -30,7 +30,9 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
 
     def allTransactionsCompleted: Boolean = {
         // Should return whether all Transaction-objects in transactions are completed
-        getTransactions.exists(t => t.status != TransactionStatus.SUCCESS)
+        val res = !getTransactions.exists(t => t.status != TransactionStatus.SUCCESS)
+        println(res)
+        res
     }
 
     def withdraw(amount: Double): Unit = balance.synchronized {
@@ -50,8 +52,8 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
 
     def sendTransactionToBank(t: Transaction): Unit = {
         // Should send a message containing t to the bank of this account
-        // ???
         transactions += (t.id -> t)
+        BankManager.findBank(bankId) ! t
     }
 
     def transferTo(accountNumber: String, amount: Double): Transaction = {
@@ -85,15 +87,35 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
 		case IdentifyActor => sender ! this
 
 		case TransactionRequestReceipt(to, transactionId, transaction) => {
-			// Process receipt
-			???
+      if (to == accountId) {
+        transactions -= transactionId
+        transactions += (transactionId -> transaction)
+      }
 		}
 
 		case BalanceRequest => ??? // Should return current balance
 
 		case t: Transaction => {
 			// Handle incoming transaction
-			???
+      if (t.status == TransactionStatus.PENDING) {
+          try {
+              deposit(t.amount)
+              t.status = TransactionStatus.SUCCESS
+          } catch {
+              case e: IllegalAmountException =>
+                  t.status = TransactionStatus.FAILED
+          }
+      }
+      var returnBankId = ""
+      var returnAccountId = ""
+      if (t.to.length <= 4) {
+          returnBankId = bankId
+          returnAccountId = t.to
+      } else {
+          returnBankId = t.to.substring(0,4)
+          returnAccountId = t.to.substring(4)
+      }
+      BankManager.findBank(returnBankId) ! TransactionRequestReceipt(returnAccountId, t.id, t)
 		}
 
 		case msg => ???

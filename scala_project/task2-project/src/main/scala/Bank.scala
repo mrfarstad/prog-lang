@@ -33,12 +33,20 @@ class Bank(val bankId: String) extends Actor {
 
     def findAccount(accountId: String): Option[ActorRef] = {
         // Use BankManager to look up an account with ID accountId
-        ???
+      try {
+          Some(BankManager.findAccount(bankId, accountId))
+      } catch {
+          case e: Exception => None
+      }
     }
 
     def findOtherBank(bankId: String): Option[ActorRef] = {
         // Use BankManager to look up a different bank with ID bankId
-        ???
+      try {
+          Some(BankManager.findBank(bankId))
+      } catch {
+          case e: Exception => None
+      }
     }
 
     override def receive = {
@@ -48,8 +56,8 @@ class Bank(val bankId: String) extends Actor {
         case t: Transaction => processTransaction(t)
 
         case t: TransactionRequestReceipt => {
-        // Forward receipt
-        ???
+          // Forward receipt
+          BankManager.findAccount(bankId, t.toAccountNumber)
         }
 
         case msg => ???
@@ -64,6 +72,22 @@ class Bank(val bankId: String) extends Actor {
         
         // This method should forward Transaction t to an account or another bank, depending on the "to"-address.
         // HINT: Make use of the variables that have been defined above.
-        ???
+        if (transactionStatus == TransactionStatus.PENDING) {
+            if (!isInternal && toBankId != bankId) {
+                val otherBank: ActorRef = findOtherBank(toBankId).orNull
+                if (otherBank != null) {
+                    otherBank ! t
+                } else {
+                    t.status = TransactionStatus.FAILED
+                }
+            } else {
+                val account: ActorRef = findAccount(toAccountId).orNull
+                if (account != null) {
+                    account ! t
+                } else {
+                    t.status = TransactionStatus.FAILED
+                }
+            }
+        }
     }
 }
