@@ -34,14 +34,13 @@ class Bank(val allowedAttempts: Integer = 3) {
     }
 
     private def processTransactions: Unit = {
-      var attempt = 1
+      var attempt = 0
       val t = transactionsQueue.pop
       do {
         executorContext.execute(t)
         Thread.sleep(10)
         attempt += 1
       } while (attempt < allowedAttempts && t.status != TransactionStatus.SUCCESS)
-      println(attempt, t.status)
       processedTransactions.push(t)
     }
 
