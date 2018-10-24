@@ -12,6 +12,7 @@ case class BalanceRequest()
 
 class Account(val accountId: String, val bankId: String, val initialBalance: Double = 0) extends Actor {
 
+    private val actorSystem = ActorSystem("Account")
     private var transactions = HashMap[String, Transaction]()
 
     class Balance(var amount: Double) {}
@@ -24,21 +25,33 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
 
     def getTransactions: List[Transaction] = {
         // Should return a list of all Transaction-objects stored in transactions
-        ???
+        (transactions values) toList
     }
 
     def allTransactionsCompleted: Boolean = {
         // Should return whether all Transaction-objects in transactions are completed
-        ???
+        getTransactions.exists(t => t.status != TransactionStatus.SUCCESS)
     }
 
-    def withdraw(amount: Double): Unit = ??? // Like in part 1
-    def deposit(amount: Double): Unit = ??? // Like in part 1
-    def getBalanceAmount: Double = ??? // Like in part 1
+    def withdraw(amount: Double): Unit = balance.synchronized {
+        if (amount < 0) throw new IllegalAmountException("Negative withdrawal amounts is not allowed")
+        else if (amount > balance.amount) throw new NoSufficientFundsException("Insuficcient founds")
+        balance.amount -= amount
+    }
+
+    def deposit(amount: Double): Unit = balance.synchronized {
+        if (amount > 0) throw new IllegalAmountException("Negative deposit amounts is not allowed")
+        balance.amount += amount
+    }
+
+    def getBalanceAmount: Double = balance.synchronized {
+        balance.amount
+    }
 
     def sendTransactionToBank(t: Transaction): Unit = {
         // Should send a message containing t to the bank of this account
-        ???
+        // ???
+        transactions += (t.id -> t)
     }
 
     def transferTo(accountNumber: String, amount: Double): Transaction = {

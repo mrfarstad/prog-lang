@@ -13,11 +13,22 @@ case class IdentifyActor()
 
 class Bank(val bankId: String) extends Actor {
 
+    private val actorSystem = ActorSystem("Bank")
     val accountCounter = new AtomicInteger(1000)
 
     def createAccount(initialBalance: Double): ActorRef = {
-        // Should create a new Account Actor and return its actor reference. Accounts should be assigned with unique ids (increment with 1).
-        ???
+        // Should create a new Account Actor and return its actor reference.
+        // Accounts should be assigned with unique ids (increment with 1).
+        accountCounter.getAndIncrement()
+        actorSystem.actorOf(
+            Props(
+                classOf[Account],
+                accountCounter toString,
+                bankId,
+                initialBalance
+            ),
+         s"account$bankId$accountCounter"
+        )
     }
 
     def findAccount(accountId: String): Option[ActorRef] = {
@@ -31,7 +42,7 @@ class Bank(val bankId: String) extends Actor {
     }
 
     override def receive = {
-        case CreateAccountRequest(initialBalance) => ??? // Create a new account
+        case CreateAccountRequest(initialBalance) => sender ! createAccount(initialBalance)  // Create a new account
         case GetAccountRequest(id) => ??? // Return account
         case IdentifyActor => sender ! this
         case t: Transaction => processTransaction(t)
