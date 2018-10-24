@@ -115,7 +115,7 @@ class Account(val accountId: String, val bankId: String, val initialBalance: Dou
       BankManager.findBank(returnBankId) ! TransactionRequestReceipt(returnAccountId, t.id, t)
 		}
 
-		case msg => ???
+		case msg => println(msg)
     }
 
 

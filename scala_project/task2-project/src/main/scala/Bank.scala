@@ -68,11 +68,15 @@ class Bank(val bankId: String) extends Actor {
                 val otherBank: ActorRef = findOtherBank(toBankId).orNull
                 if (otherBank != null) {
                     otherBank ! t
+                } else {
+                    t.status = TransactionStatus.FAILED
                 }
             } else {
                 val account: ActorRef = findAccount(toAccountId).orNull
                 if (account != null) {
                     account ! t
+                } else {
+                    t.status = TransactionStatus.FAILED
                 }
             }
         }
